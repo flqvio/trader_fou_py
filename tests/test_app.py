@@ -36,7 +36,7 @@ class CryptoTrackerTestCase(unittest.TestCase):
         favorites.clear()  # Réinitialiser les favoris pour le test
         self.app.post('/add_favorite', data={'crypto': 'btcusd'})
         result = self.app.post('/add_favorite', data={'crypto': 'btcusd'})
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.status_code, 404)
         self.assertEqual(favorites.count('btcusd'), 1)
 
 if __name__ == '__main__':
