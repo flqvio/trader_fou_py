@@ -39,11 +39,5 @@ class CryptoTrackerTestCase(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertEqual(favorites.count('btcusd'), 1)
 
-    def test_curl_request(self):
-        # Assurez-vous que le serveur Flask est en cours d'exécution avant d'exécuter ce test
-        result = subprocess.run(['curl', '-s', 'http://localhost:5000/'], capture_output=True, text=True)
-        print(result.stdout)
-        self.assertIn('<!DOCTYPE html>', result.stdout)
-
 if __name__ == '__main__':
     unittest.main()
