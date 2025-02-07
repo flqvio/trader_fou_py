@@ -46,7 +46,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${{ github.sha }}
+        tags: "${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${GITHUB_SHA::7}"
 
     - name: Verify release name
       if: github.event_name == 'release' && !startsWith(github.ref, 'refs/tags/v')
