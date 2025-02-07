@@ -34,14 +34,10 @@ jobs:
       run: |
         python -m unittest discover -s tests
 
-    - name: Build Docker image
-      if: steps.run_tests.outcome == 'success'
-      run: |
-        docker build -t crypto-tracker .
-
-    - name: Push Docker image on push
+    - name: Build & Push Docker image on push
       if: steps.run_tests.outcome == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: |
+        docker build -t crypto-tracker .
         echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
         docker tag crypto-tracker "${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${GITHUB_SHA::7}"
         docker push "${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${GITHUB_SHA::7}"
