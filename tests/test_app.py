@@ -1,5 +1,6 @@
 import unittest
 from app import app, favorites
+import subprocess
 
 class CryptoTrackerTestCase(unittest.TestCase):
 
@@ -29,6 +30,19 @@ class CryptoTrackerTestCase(unittest.TestCase):
         result = self.app.get('/get_favorites')
         self.assertEqual(result.status_code, 200)
         self.assertIn('btcusd', result.json['favorites'])
+
+    def test_add_duplicate_favorite(self):
+        global favorites  # Accéder à la variable globale
+        favorites.clear()  # Réinitialiser les favoris pour le test
+        self.app.post('/add_favorite', data={'crypto': 'btcusd'})
+        result = self.app.post('/add_favorite', data={'crypto': 'btcusd'})
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(favorites.count('btcusd'), 1)
+
+    def test_curl_request(self):
+        # Assurez-vous que le serveur Flask est en cours d'exécution avant d'exécuter ce test
+        result = subprocess.run(['curl', '-s', 'http://localhost:5000/'], capture_output=True, text=True)
+        self.assertIn('<!DOCTYPE html>', result.stdout)
 
 if __name__ == '__main__':
     unittest.main()
