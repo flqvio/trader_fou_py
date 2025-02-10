@@ -1,113 +1,97 @@
-# CryptoTracker
+### Documentation de trader_fou_py
 
-Une application web moderne pour suivre les prix des cryptomonnaies en temps réel.
+## Qu'est-ce que c'est ?
 
-## Fonctionnalités
+**trader_fou_py** est une application web développée avec **Flask** qui permet aux utilisateurs de suivre les prix des cryptomonnaies et de gérer une liste de cryptomonnaies favorites. L'application interagit avec l'API Gemini pour récupérer les prix des cryptomonnaies en temps réel.
 
-1. **Liste des Cryptomonnaies**
-   - Affichage des top 50 cryptomonnaies
-   - Prix en temps réel
-   - Variation sur 24h
-   - Market Cap
+## Services / Fonctionnalités
 
-2. **Recherche**
-   - Filtrage en temps réel des cryptomonnaies
-   - Recherche par nom ou symbole
+- 💱 **Suivi des Prix des Cryptomonnaies** : Récupère et affiche les prix actuels des cryptomonnaies sélectionnées.
+- ⭐ **Gestion des Favoris** : Ajoute et consulte une liste de cryptomonnaies favorites pour un accès rapide.
+- 🌐 **Données en Temps Réel** : Utilise l'API Gemini pour garantir des informations à jour sur les cryptomonnaies.
 
-3. **Graphiques Détaillés**
-   - Visualisation de l'évolution des prix sur 7 jours
-   - Interface interactive avec tooltips
-   - Mode plein écran pour les détails
+---
 
-## Prérequis
+## Voici  un aperçu de l'application
 
-- Node.js 20.x ou supérieur
-- npm 9.x ou supérieur
-- Docker (pour le déploiement)
+![Page d'Accueil](https://github.com/flqvio/trader_fou_py/tree/main/images/appli.png)
 
-## Installation
+## Comment Construire
 
-```bash
-# Cloner le repository
-git clone https://github.com/votre-username/cryptotracker.git
-cd cryptotracker
+### Prérequis
 
-# Installer les dépendances
-npm install
+- **Python** 3.13
+- **pip** (gestionnaire de paquets Python)
+- **Docker** (optionnel pour le déploiement en conteneur)
 
-# Démarrer en mode développement
-npm run dev
+### Installation
+
+```sh
+git clone https://github.com/flqvio/trader_fou_py.git
+cd trader_fou_py
+pip install -r requirements.txt
 ```
 
-## Tests
+### Processus de Construction
 
-```bash
-# Lancer les tests
-npm run test
+Pour une version prête à l'emploi, assurez-vous que toutes les dépendances sont installées et que l'application est correctement configurée.
 
-# Lancer les tests avec couverture
-npm run test:coverage
+---
+
+## Comment Tester
+
+### Exécution des Tests Unitaires
+
+`trader_fou_py` utilise **unittest** pour tester les fonctionnalités de l'application.
+
+```sh
+python -m unittest discover -s tests
 ```
 
-## Build & Déploiement
+Cette commande exécutera tous les tests définis dans la suite de tests.
 
-### Build Local
+### Exemples de Fichiers de Test
 
-```bash
-npm run build
+- `test_app.py` : Contient des tests pour les principales fonctionnalités de l'application, y compris la récupération des prix et la gestion des favoris.
+
+---
+
+## Comment Exécuter Localement
+
+Pour exécuter `trader_fou_py` en mode développement :
+
+```sh
+python app.py
 ```
 
-### Docker
+Cela lancera le serveur de développement sur `http://127.0.0.1:5000/`.
 
-```bash
-# Build de l'image
-docker build -t cryptotracker .
+---
 
-# Lancement du container
-docker run -p 80:80 -e VITE_COINGECKO_API_KEY=votre_api_key cryptotracker
+## Comment Exécuter avec Docker
+
+### Construction de l'Image Docker
+
+```sh
+docker build -t trader_fou_py .
 ```
 
-## CI/CD
+### Exécution du Conteneur
 
-Le projet utilise GitHub Actions pour l'intégration et le déploiement continus.
+```sh
+docker run -p 5000:5000 trader_fou_py
+```
 
-### Workflow
+L'application sera accessible à l'adresse `http://localhost:5000/`.
 
-1. **Pull Requests**
-   - Tests automatiques
-   - Vérification du linting
-   - Review obligatoire avant merge
+---
 
-2. **Main Branch**
-   - Tests
-   - Build de l'image Docker
-   - Push sur Docker Hub avec le SHA du commit
+## CI/CD avec GitHub Actions
 
-3. **Releases**
-   - Tests
-   - Build de l'image Docker
-   - Push sur Docker Hub avec le tag de la release
+- **Pull Request** : Les tests sont exécutés à chaque push sur une pull request. La fusion est bloquée si les tests échouent ou si le code n'est pas revu.
+- **Fusion vers le Trunk** : Les tests sont exécutés, l'application est construite, et l'image Docker est poussée avec le SHA du commit.
+- **Release** : Les tests sont exécutés, l'application est construite, et l'image Docker est poussée avec le nom de la release.
 
-## Variables d'Environnement
+---
 
-- `VITE_COINGECKO_API_KEY`: Clé API CoinGecko (optionnelle pour le développement)
-
-## Architecture
-
-- React + TypeScript pour le frontend
-- Vite comme bundler
-- Tailwind CSS pour le styling
-- Chart.js pour les graphiques
-- Testing Library + Vitest pour les tests
-
-## Contribution
-
-1. Fork le projet
-2. Créer une branche pour votre feature (`git checkout -b feature/AmazingFeature`)
-3. Commit vos changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push sur la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
-
-## License
-
-MIT
+Ce README fournit un guide complet pour comprendre, construire, tester et exécuter l'application web `trader_fou_py`. Si vous avez des questions ou besoin d'une assistance supplémentaire, n'hésitez pas à nous contacter !
