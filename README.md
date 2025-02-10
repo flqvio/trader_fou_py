@@ -14,7 +14,7 @@
 
 ## Voici  un aperçu de l'application
 
-![Page d'Accueil](https://github.com/flqvio/trader_fou_py/tree/main/images/appli.png)
+![Page d'Accueil](https://github.com/flqvio/trader_fou_py/blob/main/images/appli.png)
 
 ## Comment Construire
 
