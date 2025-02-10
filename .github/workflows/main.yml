@@ -16,6 +16,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Verify release name
+      if: github.event_name == 'release' && !startsWith(github.ref, 'refs/tags/v')
+      run: |
+        echo "Release name must start with 'v' followed by a version number"
+        exit 1
+
     - name: Checkout code
       uses: actions/checkout@v2
 
@@ -34,21 +40,25 @@ jobs:
       run: |
         python -m unittest discover -s tests
 
-    - name: Build Docker image
-      if: steps.run_tests.outcome == 'success'
-      run: |
-        docker build -t crypto-tracker .
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Push Docker image on push
+    - name: Build & Push Docker image on push
       if: steps.run_tests.outcome == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: |
-        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-        docker tag crypto-tracker "${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${GITHUB_SHA::7}"
-        docker push "${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${GITHUB_SHA::7}"
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${{ github.sha }}
 
-    - name: Push Docker image on release
-      if: steps.run_tests.outcome == 'success' && github.event_name == 'release' && startsWith(github.ref, 'refs/tags/v')
-      run: |
-        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-        docker tag crypto-tracker "${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${GITHUB_REF##*/}"
-        docker push "${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${GITHUB_REF##*/}"
+
+    - name: Build & Push Docker image on release
+      if: steps.run_tests.outcome == 'success' && github.event_name == 'release'
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/crypto-tracker:${{ github.ref_name }}
